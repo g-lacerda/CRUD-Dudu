@@ -11,6 +11,7 @@ class CreateEditorasTable extends Migration
         Schema::create('editoras', function (Blueprint $table) {
             $table->id('id_editora');
             $table->string('nome');
+            $table->timestamps();
         });
     }
 

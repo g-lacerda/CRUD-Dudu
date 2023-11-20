@@ -15,6 +15,7 @@ class CreateEmprestimosTable extends Migration
             $table->date('data_devolucao_prevista');
             $table->date('data_devolucao')->nullable();
             $table->string('status');
+            $table->timestamps();
 
             $table->foreign('id_livro')->references('id_livro')->on('livros');
         });

@@ -25,7 +25,7 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>Livraria Cadastros</h2>
+                            <h2>Livraria do Dudu</h2>
                         </div>
                         <div class="col-sm-6">
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
@@ -53,142 +53,63 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
-                            <td>A sutil arte de ligar o fodase</td>
-                            <td>2023</td>
-                            <td>Vivencia</td>
-                            <td>Cria</td>
-                            <td>Editora fodase</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                                        data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
-                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
-                            <td>A sutil arte de ligar o fodase</td>
-                            <td>2023</td>
-                            <td>Vivencia</td>
-                            <td>Cria</td>
-                            <td>Editora fodase</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                                        data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
-                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
-                            <td>A sutil arte de ligar o fodase</td>
-                            <td>2023</td>
-                            <td>Vivencia</td>
-                            <td>Cria</td>
-                            <td>Editora fodase</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                                        data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
-                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
-                            <td>A sutil arte de ligar o fodase</td>
-                            <td>2023</td>
-                            <td>Vivencia</td>
-                            <td>Cria</td>
-                            <td>Editora fodase</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                                        data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
-                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
-                            <td>A sutil arte de ligar o fodase</td>
-                            <td>2023</td>
-                            <td>Vivencia</td>
-                            <td>Cria</td>
-                            <td>Editora fodase</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
-                                        data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
-                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-                        </tr>
-
-
+                        @if(isset($livros))
+                            @foreach ($livros as $livro)
+                            <tr>
+                                <td>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" id="checkbox{{ $livro->id_livro }}" name="options[]" value="{{ $livro->id_livro }}">
+                                        <label for="checkbox{{ $livro->id_livro }}"></label>
+                                    </span>
+                                </td>
+                                <td>{{ $livro->titulo }}</td>
+                                <td>{{ $livro->ano_publicacao }}</td>
+                                <td>{{ $livro->categoria->nome ?? 'N/A' }}</td>
+                                <td>{{ $livro->autor->nome ?? 'N/A' }}</td>
+                                <td>{{ $livro->editora->nome ?? 'N/A' }}</td>
+                                <td>
+                                    <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                    <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
 
             </div>
         </div>
     </div>
-    <!-- Edit Modal HTML -->
+    <!-- Add Modal HTML -->
     <div id="addEmployeeModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form action="{{ route('livros.store') }}" method="POST">
+                    @csrf
                     <div class="modal-header">
-                        <h4 class="modal-title">Add Employee</h4>
+                        <h4 class="modal-title">Adicionar Livro</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Titulo</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" name="titulo" required>
                         </div>
                         <div class="form-group">
                             <label>Ano Publicação</label>
-                            <input type="email" class="form-control" required>
+                            <input type="number" class="form-control" name="ano_publicacao" required>
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" name="categoria" required>
                         </div>
                         <div class="form-group">
                             <label>Autor</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" name="autor" required>
                         </div>
                         <div class="form-group">
                             <label>Editora</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" class="form-control" name="editora" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -216,7 +137,7 @@
                         </div>
                         <div class="form-group">
                             <label>Ano Publicação</label>
-                            <input type="email" class="form-control" required>
+                            <input type="number" class="form-control" name="ano_publicacao" id="ano_publicacao" minlength="4" required>
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
@@ -263,3 +184,23 @@
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('formLivro');
+        form.addEventListener('input', function() {
+            const anoPublicacao = document.getElementById('ano_publicacao');
+            const campos = form.querySelectorAll('input');
+            let todosPreenchidos = true;
+            
+            campos.forEach(campo => {
+                if (!campo.value.trim() || (campo.name === 'ano_publicacao' && campo.value.toString().length < 4)) {
+                    todosPreenchidos = false;
+                }
+            });
+
+            form.querySelector('input[type="submit"]').disabled = !todosPreenchidos;
+        });
+    });
+</script>
+

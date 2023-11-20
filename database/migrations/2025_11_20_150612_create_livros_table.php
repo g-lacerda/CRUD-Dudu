@@ -14,9 +14,10 @@ class CreateLivrosTable extends Migration
             $table->unsignedBigInteger('id_autor');
             $table->unsignedBigInteger('id_editora');
             $table->year('ano_publicacao');
+            $table->timestamps();
 
-            $table->foreign('id_autor')->references('id')->on('autores');
-            $table->foreign('id_editora')->references('id')->on('editoras');
+            $table->foreign('id_autor')->references('id_autor')->on('autores');
+            $table->foreign('id_editora')->references('id_editora')->on('editoras');
         });
     }
 
