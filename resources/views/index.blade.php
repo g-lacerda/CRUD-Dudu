@@ -53,10 +53,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($livros))
-                            @foreach ($livros as $livro)
+                    @if(isset($livros))
+                        @foreach ($livros as $livro)
                             <tr>
-                                <td>
+                            <td>
                                     <span class="custom-checkbox">
                                         <input type="checkbox" id="checkbox{{ $livro->id_livro }}" name="options[]" value="{{ $livro->id_livro }}">
                                         <label for="checkbox{{ $livro->id_livro }}"></label>
@@ -72,8 +72,8 @@
                                     <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                 </td>
                             </tr>
-                            @endforeach
-                        @endif
+                        @endforeach
+                    @endif
                     </tbody>
                 </table>
 
@@ -97,7 +97,7 @@
                         </div>
                         <div class="form-group">
                             <label>Ano Publicação</label>
-                            <input type="number" class="form-control" name="ano_publicacao" required>
+                            <input type="number" class="form-control" name="ano_publicacao" minlength="4" required>
                         </div>
                         <div class="form-group">
                             <label>Categoria</label>
@@ -122,36 +122,34 @@
     </div>
     <!-- Edit Modal HTML -->
     <div id="editEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Editar livro selecionado</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm" action="{{ route('livros.update') }}" method="POST">
+                @csrf
+                <!-- ... Outras partes do formulário ... -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tituloEdit">Titulo</label>
+                        <input type="text" class="form-control" id="tituloEdit" name="titulo" required>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Titulo</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Ano Publicação</label>
-                            <input type="number" class="form-control" name="ano_publicacao" id="ano_publicacao" minlength="4" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Categoria</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Autor</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Editora</label>
-                            <input type="text" class="form-control" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="anoPublicacaoEdit">Ano Publicação</label>
+                        <input type="number" class="form-control" name="ano_publicacao" id="anoPublicacaoEdit" minlength="4" required>
                     </div>
+                    <div class="form-group">
+                        <label for="categoriaEdit">Categoria</label>
+                        <input type="text" class="form-control" name="categoria" id="categoriaEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="autorEdit">Autor</label>
+                        <input type="text" class="form-control" name="autor" id="autorEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editoraEdit">Editora</label>
+                        <input type="text" class="form-control" name="editora" id="editoraEdit" required>
+                    </div>
+                    <input type="text" class="form-control" id="idLivroEdit" name="id_livro" value="" style="display: none;" required>
+                </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <input type="submit" class="btn btn-info" value="Save">
@@ -173,6 +171,7 @@
                         <p>Você tem certeza que quer deletar os livros selecionados?</p>
                         <p class="text-warning"><small>Está ação não pode ser desfeita.</small></p>
                     </div>
+                    <input type="text" class="form-control" id="idLivroDelete" name="id_livro" value="" style="display: none;">
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <input type="submit" class="btn btn-danger" value="Delete">
@@ -186,21 +185,101 @@
 </html>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('formLivro');
-        form.addEventListener('input', function() {
-            const anoPublicacao = document.getElementById('ano_publicacao');
-            const campos = form.querySelectorAll('input');
-            let todosPreenchidos = true;
-            
-            campos.forEach(campo => {
-                if (!campo.value.trim() || (campo.name === 'ano_publicacao' && campo.value.toString().length < 4)) {
-                    todosPreenchidos = false;
-                }
-            });
 
-            form.querySelector('input[type="submit"]').disabled = !todosPreenchidos;
+    $(document).ready(function () {
+
+    // Activate tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Select/Deselect checkboxes
+    var checkbox = $('table tbody input[type="checkbox"]');
+    $("#selectAll").click(function () {
+        if (this.checked) {
+            checkbox.each(function () {
+                this.checked = true;
+            });
+        } else {
+            checkbox.each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    checkbox.click(function () {
+        if (!this.checked) {
+            $("#selectAll").prop("checked", false);
+        }
+    });
+    });
+
+    $(document).ready(function () {
+    $('.edit').on('click', function () {
+        var livroId = $(this).closest('tr').find('input[type="checkbox"]').val();
+
+        // Use AJAX para buscar os dados do livro no backend
+        $.ajax({
+            url: '/api/buscar-livro',
+            method: 'GET',
+            dataType: 'json',
+            data: { id_livro: livroId },  // Ajuste para id_livro
+            success: function (data) {
+                $('#editForm #idLivroEdit').val(data.id_livro);
+                $('#editForm #tituloEdit').val(data.titulo);
+                $('#editForm #anoPublicacaoEdit').val(data.ano_publicacao);
+                $('#editForm #categoriaEdit').val(data.categoria.nome);
+                $('#editForm #autorEdit').val(data.autor.nome);
+                $('#editForm #editoraEdit').val(data.editora.nome);
+                // Adicione outros campos conforme necessário
+            },
+            error: function () {
+                alert('Erro');
+                // Trate erros, se necessário
+            }
         });
     });
-</script>
+});
 
+$(document).ready(function () {
+    $('.delete').on('click', function () {
+        // Encontre a checkbox correspondente com base no ícone de exclusão clicado
+        var checkbox = $(this).closest('tr').find('input[type="checkbox"]');
+
+        // Marque a checkbox se não estiver marcada, desmarque se já estiver marcada
+        checkbox.prop('checked', !checkbox.prop('checked'));
+    });
+});
+
+
+$(document).ready(function () {
+    $('#deleteEmployeeModal form').submit(function (event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        var livroIds = [];  // Inicializa um array para armazenar os id_livro selecionados
+
+        // Encontra todas as checkboxes marcadas e obtém seus valores (id_livro)
+        $('input[type="checkbox"]:checked').each(function() {
+            livroIds.push($(this).val());
+        });
+
+        // Use AJAX para enviar os dados para o backend
+        $.ajax({
+            url: '/api/apaga-livro',
+            method: 'POST',
+            dataType: 'json',
+            data: { livros: livroIds },
+            success: function (data) {
+                // Aqui você pode manipular a resposta do backend, se necessário
+            },
+            error: function () {
+            }
+        });
+
+        // Feche o modal após o envio dos dados
+        $('#deleteEmployeeModal').modal('hide');
+        location.reload();
+    });
+});
+
+
+
+
+</script>

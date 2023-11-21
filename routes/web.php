@@ -18,4 +18,5 @@ use App\Http\Controllers\LivroController;
 Route::get('/', [LivroController::class, 'index'])->name('index');
 
 Route::resource('livros', 'App\Http\Controllers\LivroController');
+Route::post('/livros/update', [LivroController::class, 'update'])->name('livros.update');
 

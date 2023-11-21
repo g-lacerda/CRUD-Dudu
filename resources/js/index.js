@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    alert('teste');
     // Activate tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -21,19 +23,22 @@ $(document).ready(function () {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('formLivro');
-    form.addEventListener('input', function() {
-        const anoPublicacao = document.getElementById('ano_publicacao');
-        const campos = form.querySelectorAll('input');
-        let todosPreenchidos = true;
-        
-        campos.forEach(campo => {
-            if (!campo.value.trim() || (campo.name === 'ano_publicacao' && campo.value.toString().length < 4)) {
-                todosPreenchidos = false;
-            }
-        });
 
-        form.querySelector('input[type="submit"]').disabled = !todosPreenchidos;
+    $(document).ready(function () {
+        $('.edit').on('click', function () {
+            var livroId = $(this).data('id');
+            var titulo = $(this).data('titulo');
+            var ano = $(this).data('ano');
+            var categoria = $(this).data('categoria');
+            var autor = $(this).data('autor');
+            var editora = $(this).data('editora');
+
+            $('#editForm #tituloEdit').val(titulo);
+            $('#editForm #anoPublicacaoEdit').val(ano);
+            $('#editForm #categoriaEdit').val(categoria);
+            $('#editForm #autorEdit').val(autor);
+            $('#editForm #editoraEdit').val(editora);
+            // Adicione outros campos conforme necessário
+        });
     });
-});
+
