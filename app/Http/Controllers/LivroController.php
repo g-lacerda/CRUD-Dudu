@@ -106,7 +106,9 @@ class LivroController extends Controller
         if (is_array($request->livros)) {
         foreach($request->livros as $id_livro){
             $livroDelete = Livro::find($id_livro);
+            if(isset($livroDelete)){
             $livroDelete->delete();
+            }
         }
         return redirect()->route('livros.index')
                              ->with('success', 'Livro deletado com sucesso.');

@@ -243,10 +243,13 @@ $(document).ready(function () {
         // Encontre a checkbox correspondente com base no ícone de exclusão clicado
         var checkbox = $(this).closest('tr').find('input[type="checkbox"]');
 
-        // Marque a checkbox se não estiver marcada, desmarque se já estiver marcada
-        checkbox.prop('checked', !checkbox.prop('checked'));
+        // Marque a checkbox apenas se ainda não estiver marcado
+        if (!checkbox.prop('checked')) {
+            checkbox.prop('checked', true);
+        }
     });
 });
+
 
 
 $(document).ready(function () {
