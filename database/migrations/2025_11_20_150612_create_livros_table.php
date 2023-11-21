@@ -13,11 +13,16 @@ class CreateLivrosTable extends Migration
             $table->string('titulo');
             $table->unsignedBigInteger('id_autor');
             $table->unsignedBigInteger('id_editora');
-            $table->year('ano_publicacao');
+            $table->unsignedBigInteger('id_categoria');
+            $table->unsignedSmallInteger('ano_publicacao')
+            ->default(0) 
+            ->nullable(false)  
+            ->comment('Ano de publicação do livro');
             $table->timestamps();
 
             $table->foreign('id_autor')->references('id_autor')->on('autores');
             $table->foreign('id_editora')->references('id_editora')->on('editoras');
+            $table->foreign('id_categoria')->references('id_categoria')->on('categorias');
         });
     }
 

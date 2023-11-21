@@ -10,7 +10,7 @@ class Livro extends Model
     use HasFactory;
 
     protected $primaryKey = 'id_livro';
-    protected $fillable = ['titulo', 'id_autor', 'id_editora', 'ano_publicacao'];
+    protected $fillable = ['titulo', 'id_autor', 'id_editora', 'id_categoria', 'ano_publicacao'];
 
     public function autor()
     {

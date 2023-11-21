@@ -27,7 +27,7 @@ class LivroController extends Controller
         'autor' => 'required',
         'editora' => 'required',
         'categoria' => 'required',
-        'ano_publicacao' => 'required|digits:4'
+        'ano_publicacao' => 'required|integer|min:1|max:2023',
     ]);
 
         
